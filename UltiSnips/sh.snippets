@@ -32,7 +32,9 @@ endsnippet
 snippet sbash "safe bash options" b
 #!/usr/bin/env bash
 set -euo pipefail
-IFS=$'\n\t'
+
+readonly WORKSPACE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly SCRIPTNAME="${WORKSPACE}/$(basename "${BASH_SOURCE[0]}"))"
 `!p snip.rv ='\n\n' `
 endsnippet
 
