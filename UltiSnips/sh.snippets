@@ -33,9 +33,22 @@ snippet sbash "safe bash options" b
 #!/usr/bin/env bash
 set -euo pipefail
 
-readonly WORKSPACE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-readonly SCRIPTNAME="${WORKSPACE}/$(basename "${BASH_SOURCE[0]}"))"
-`!p snip.rv ='\n\n' `
+readonly SCRIPTPATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly SCRIPTNAME="${SCRIPTPATH}/$(basename "${BASH_SOURCE[0]}")"
+
+WORKSPACE=$(mktemp -dt "$(basename "$SCRIPTNAME").XXXXXXXXXX")
+
+_cleanup() {
+    rm -rf "$WORKSPACE"
+}
+trap _cleanup EXIT 
+
+_usage() {
+    echo "USAGE: bash $(basename "$SCRIPTNAME")"
+    exit 1
+}
+
+`!p snip.rv ='\n' `
 endsnippet
 
 snippet temp "Tempfile" b
